@@ -1,15 +1,23 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, CardMedia, Grid } from "@material-ui/core";
+import { Card, CardContent, CardMedia } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
+  grid: {
+    display: "flex",
+    flexFlow: "row wrap",
+    objectFit: "contain",
+    justifyContent: "center",
+  },
   card: {
-    height: "500px",
-    width: "300px",
+    height: "400px",
+    width: "250px",
+    marginRight: "10px",
+    marginTop: "10px",
   },
   img: {
-    height: "350px",
-    width: "250px",
+    height: "300px",
+    width: "200px",
     margin: "auto",
   },
 }));
@@ -18,28 +26,17 @@ export default function Movies(props) {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.grid}>
       {props.movies.map((movies) => {
         return (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-          >
-            <Grid item>
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography gutterBottom variant="h9" component="h3">
-                    {movies.Title}
-                  </Typography>
-                  <CardMedia className={classes.img} image={movies.Poster} />
-                  {movies.Year}
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography gutterBottom variant="h9" component="h3">
+                {movies.Title}
+              </Typography>
+              <CardMedia className={classes.img} image={movies.Poster} />
+            </CardContent>
+          </Card>
         );
       })}
     </div>

@@ -1,14 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-import Navbar from './components/Navbar';
-import MovieInfo from './components/MovieInfo';
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import MovieInfo from "./components/MovieInfo";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <MovieInfo />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/search"></Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
