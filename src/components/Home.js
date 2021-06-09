@@ -20,32 +20,46 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [showMovies, setShowMovies] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 10;
+  const [pageQuery, setPageQuery] = useState("");
 
-  function handleSubmit(e, page) {
-    e.preventDefault();
+  function handleSubmit(e, page, query) {
     let response;
+    e.preventDefault();
+    let searchParam;
     async function fetchMyAPI(page) {
-      const searchParam = encodeURIComponent(query);
-      const apiUrl = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API}&s=${searchParam}&page={currentPage}&type=movie&r=json`;
+      if (query === null) searchParam = encodeURIComponent(pageQuery);
+      else {
+        searchParam = encodeURIComponent(query);
+        setPageQuery(query);
+      }
+
+      setCurrentPage(page);
+      console.log(searchParam);
+      const apiUrl = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API}&s=${searchParam}&page=${page}&type=movie&r=json`;
       console.log(apiUrl);
-      response = await fetch(apiUrl);
-      response = await response.json();
-      console.log(response.Search);
-      setMovies(response.Search);
+      try {
+        response = await fetch(apiUrl);
+        response = await response.json();
+        console.log(response.Search);
+        setMovies(response.Search);
+        setShowMovies(true);
+        setQuery("");
+      } catch {
+        alert("bad");
+      }
     }
 
     fetchMyAPI(page);
-    setShowMovies(true);
-    setQuery("");
-
-    //history.push("/search");
   }
 
   return (
     <div>
-      <img src={Logo} className={classes.img} c />
-      <form onSubmit={handleSubmit}>
+      <img src={Logo} className={classes.img} />
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e, 1, query);
+        }}
+      >
         <label htmlFor="queryInput">Search Movie Name:</label>
         <input
           id="queryInput"
@@ -53,14 +67,20 @@ export default function Home() {
           type="text"
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button className="search">Submit</button>
+        <button
+          className="search"
+          onClick={() => history.push("/search", { Movie: movies })}
+        >
+          Submit
+        </button>
       </form>
       <button
-        onClick={() => {
-          setCurrentPage(currentPage + 1);
-          handleSubmit(currentPage).then((movies) => setMovies(movies));
+        onClick={(e) => {
+          handleSubmit(e, currentPage + 1, null);
         }}
-      ></button>
+      >
+        Next Page
+      </button>
       <div>{showMovies ? <Movies movies={movies} /> : <></>}</div>
     </div>
   );

@@ -29,11 +29,9 @@ export default function Movies(props) {
     <div className={classes.grid}>
       {props.movies.map((movies) => {
         return (
-          <Card className={classes.card}>
+          <Card className={classes.card} key={movies.Title}>
             <CardContent>
-              <Typography gutterBottom variant="h9" component="h3">
-                {movies.Title}
-              </Typography>
+              <Typography component="h3">{movies.Title}</Typography>
               <CardMedia className={classes.img} image={movies.Poster} />
             </CardContent>
           </Card>
