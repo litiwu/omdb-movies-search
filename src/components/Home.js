@@ -24,7 +24,6 @@ export default function Home() {
 
   function handleSubmit(e, page, query) {
     let response;
-    e.preventDefault();
     let searchParam;
     async function fetchMyAPI(page) {
       if (query === null) searchParam = encodeURIComponent(pageQuery);
@@ -69,19 +68,14 @@ export default function Home() {
         />
         <button
           className="search"
-          onClick={() => history.push("/search", { Movie: movies })}
+          onClick={(e) => {
+            history.push("/search", { query: query });
+            e.preventDefault();
+          }}
         >
           Submit
         </button>
       </form>
-      <button
-        onClick={(e) => {
-          handleSubmit(e, currentPage + 1, null);
-        }}
-      >
-        Next Page
-      </button>
-      <div>{showMovies ? <Movies movies={movies} /> : <></>}</div>
     </div>
   );
 }
