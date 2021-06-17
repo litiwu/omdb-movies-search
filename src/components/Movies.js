@@ -59,13 +59,15 @@ const useStyles = makeStyles((theme) => ({
 export default function Movies(props) {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   function moviePoster(movie) {
     if (movie.Poster === "N/A") return PlaceHolder;
     else return movie.Poster;
   }
 
-  const handleOpen = () => {
+  const handleOpen = (id) => {
+    setSelectedId(id);
     setOpenModal(true);
   };
 
@@ -79,7 +81,11 @@ export default function Movies(props) {
         {props.movies.map((movies) => {
           return (
             <Card className={classes.card} key={movies.Title}>
-              <div onClick={handleOpen}>
+              <div
+                onClick={() => {
+                  handleOpen(movies.imdbID);
+                }}
+              >
                 <CardContent>
                   <CardMedia
                     className={classes.img}
@@ -96,7 +102,7 @@ export default function Movies(props) {
       </div>
       <Modal open={openModal} onClose={handleClose}>
         <div className={classes.paper}>
-          <ModalInfo />
+          <ModalInfo id={selectedId} />
         </div>
       </Modal>
     </div>
