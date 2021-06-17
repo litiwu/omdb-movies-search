@@ -38,6 +38,7 @@ export default function MovieInfo(props) {
       console.log(response.Search);
       if (response.Response == "False") setShowMovies(false);
       else {
+        console.log("error in movieInfo");
         setMovies(response.Search);
         setTotalPages(Math.ceil(response.totalResults / 10));
         setShowMovies(true);
@@ -49,6 +50,7 @@ export default function MovieInfo(props) {
   }
 
   useEffect(() => {
+    console.log("error in useEffect");
     getPage(currentPage);
   }, [currentPage]);
 

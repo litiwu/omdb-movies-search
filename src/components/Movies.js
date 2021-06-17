@@ -7,6 +7,9 @@ import {
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import PlaceHolder from "../images/placeholder.png";
+import Modal from "@material-ui/core/Modal";
+import { useState } from "react";
+import ModalInfo from "./ModalInfo";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,15 +43,35 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: "20px",
   },
+  paper: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "70%",
+    height: "70%",
+    backgroundColor: "#FBE4E4",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 export default function Movies(props) {
   const classes = useStyles();
+  const [openModal, setOpenModal] = useState(false);
 
   function moviePoster(movie) {
     if (movie.Poster === "N/A") return PlaceHolder;
     else return movie.Poster;
   }
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -56,11 +79,7 @@ export default function Movies(props) {
         {props.movies.map((movies) => {
           return (
             <Card className={classes.card} key={movies.Title}>
-              <div
-                onClick={() => {
-                  console.log("hi");
-                }}
-              >
+              <div onClick={handleOpen}>
                 <CardContent>
                   <CardMedia
                     className={classes.img}
@@ -75,6 +94,11 @@ export default function Movies(props) {
           );
         })}
       </div>
+      <Modal open={openModal} onClose={handleClose}>
+        <div className={classes.paper}>
+          <ModalInfo />
+        </div>
+      </Modal>
     </div>
   );
 }
