@@ -1,6 +1,6 @@
 # Me Movies
 
-A modern solution for easy to use movie searches.
+A minimalistic and easy to use movie searcher.
 
 ## To Access The Website:
 
