@@ -40,7 +40,7 @@ export default function Home() {
 
   return (
     <div className={classes.root}>
-      <img src={Logo} className={classes.img} />
+      <img src={Logo} className={classes.img} alt={"Me Movies"} />
       <div>
         <InputBase
           placeholder="Search For Movie"

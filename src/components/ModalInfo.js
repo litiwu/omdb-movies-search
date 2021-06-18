@@ -1,45 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
+import PlaceHolder from "../images/placeholder.png";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
   flex: {
     display: "flex",
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   poster: {
-    justifyContent: "center",
-
-    paddingRight: "20px",
+    paddingLeft: "20px",
+  },
+  img: {
+    height: "400px",
+    width: "280px",
+    margin: "auto",
+    objectFit: "contain",
   },
   info: {
     alignItems: "center",
-    paddingTop: "20px",
+    paddingLeft: "40px",
+    paddingBottom: "80px",
+  },
+  h2: {
+    marginBlock: "5px",
+    fontSize: "50px",
+    color: "#484343",
+  },
+  p: {
+    fontSize: "18px",
+    color: "#858585",
+  },
+  plot: {
+    fontSize: "18px",
+    color: "#858585",
+  },
+  dir: {
+    fontSize: "22px",
+    color: "#686868",
+  },
+  chip: {
+    backgroundColor: "#FFB2B2",
+    fontSize: "14px",
+    color: "#FFFFFF",
   },
 }));
 
 export default function ModalInfo(props) {
   const classes = useStyles();
   const [movieDetail, setMovieDetail] = useState([]);
-  const [showMovieDetail, setShowMovieDetail] = useState(false);
 
-  console.log("inside modal info");
+  function moviePosterGetter() {
+    if (movieDetail.Poster === "N/A") return PlaceHolder;
+    else return movieDetail.Poster;
+  }
 
   function getMovieDetails(id) {
     let response;
     async function fetchMyAPI(id) {
       const apiUrl = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_API}&i=${id}&r=json`;
-      console.log(apiUrl);
       response = await fetch(apiUrl);
       response = await response.json();
-      console.log(response);
-      if (response.Response == "False") setShowMovieDetail(false);
-      else {
-        setMovieDetail(response);
-        setShowMovieDetail(true);
-      }
+      if (response.Response === "True") setMovieDetail(response);
     }
-
     fetchMyAPI(id);
   }
 
@@ -50,15 +75,29 @@ export default function ModalInfo(props) {
   return (
     <div className={classes.flex}>
       <div className={classes.poster}>
-        <img src={movieDetail.Poster} />
+        <img
+          className={classes.img}
+          src={moviePosterGetter()}
+          alt={movieDetail.Name}
+        />
       </div>
       <div className={classes.info}>
-        <p>
+        <p className={classes.p}>
           {movieDetail.Released} · {movieDetail.Runtime}
         </p>
-        <h2>{movieDetail.Title}</h2>
-        <h3>{movieDetail.Director}</h3>
-        <p>{movieDetail.Plot}</p>
+        <h2 className={classes.h2}>{movieDetail.Title}</h2>
+        <h3 className={classes.dir}>{movieDetail.Director}</h3>
+        <p className={classes.plot}>{movieDetail.Plot}</p>
+        <div>
+          {movieDetail.Genre &&
+            movieDetail.Genre.split(", ").map((g) => {
+              return (
+                <span style={{ paddingRight: "5px" }}>
+                  <Chip className={classes.chip} label={g}></Chip>
+                </span>
+              );
+            })}
+        </div>
       </div>
     </div>
   );

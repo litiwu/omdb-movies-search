@@ -1,10 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  CardActionArea,
-} from "@material-ui/core";
+import { Card, CardContent, CardMedia } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import PlaceHolder from "../images/placeholder.png";
 import Modal from "@material-ui/core/Modal";
@@ -44,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
   },
   paper: {
+    display: "flex",
     position: "fixed",
+    justifyContent: "center",
+    alignItems: "center",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -52,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     height: "70%",
     backgroundColor: "#FBE4E4",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(2, 4, 2),
   },
 }));
 
